@@ -1,26 +1,46 @@
 <div class="container">
     <div  class="row">
         <div class="col-md-12 mt-5">
-            <button class="col-md-2 offset-md-10 btn btn-primary">Sign Up</button>
+            <button (click)="changeuserRegister()" class="col-md-2 offset-md-10 btn btn-primary" *ngIf="userRegister">SIGNUP </button>
+            <button (click)="changeuserRegister()" class="col-md-2 offset-md-10 btn btn-primary" *ngIf="!userRegister">LOGIN </button>
         </div>
         <div class="col-md-12">
             <img class="mx-auto d-block link-logo" src="assets/img/logo_links.svg">
         </div>
         
-        <div class="col-md-4 offset-md-4 card card-link shadow-lg">
+        <form *ngIf="userRegister" [formGroup]="formLogin" (ngSubmit)="loginSubmit(formLogin)" class="col-md-4 offset-md-4 card card-link shadow-lg">
             <h5 class="card-title">Login</h5>
                 <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input formControlName="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">Your Email</label>
                 </div>
                 <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input formControlName="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
                 </div>
-                <button class="btn btn-primary">
+                <button [disabled]="formLogin.invalid" class="btn btn-primary">
                     Login
                 </button>
-        </div>
+        </form>
+
+        <form *ngIf="!userRegister" [formGroup]="formRegister" (ngSubmit)="registerSubmit(formRegister)" class="col-md-4 offset-md-4 card card-link shadow-lg">
+            <h5 class="card-title">Sign Up</h5>
+            <div class="form-floating">
+                <input formControlName="fullName" type="text" class="form-control" id="floatingInput" placeholder="Jhon Doe">
+                <label for="floatingInput">Full name</label>
+                </div>
+                <div class="form-floating">
+                <input formControlName="email" type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Your Email</label>
+                </div>
+                <div class="form-floating">
+                <input formControlName="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+                </div>
+                <button [disabled]="formRegister.invalid" class="btn btn-primary">
+                    Register
+                </button>
+        </form>
     </div>
 </div>
 

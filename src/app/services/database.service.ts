@@ -15,10 +15,26 @@ export class DatabaseService {
   constructor(
     private http: HttpClient,
     private tokenService: TokenService
-  ) { }
+  ) { } 
 
-  createUser( email: string, password: string ){
+  createUser( name: string, email: string, password: string ) {
     return this.http.post(`${environment.url_api}/register`,
+    { name, email, password }, 
+    {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .pipe(
+      tap(
+        (data: {token: string}) => {
+          const token = data.token;
+          this.tokenService.saveToken(token);
+        }
+      )
+    )
+  }
+
+  loginUser( email: string, password: string ) {
+    return this.http.post(`${environment.url_api}/login`,
     { email, password }, 
     {
       headers: { 'Content-Type': 'application/json' }

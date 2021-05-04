@@ -14,5 +14,13 @@ export class TokenService {
   getToken() {
     return localStorage.getItem('token');
   }
+
+  saveIdUser(id: string) {
+    localStorage.setItem('idUser', id);
+  }
+
+  getIdUser() {
+    return localStorage.getItem('idUser');
+  }
   
 }
