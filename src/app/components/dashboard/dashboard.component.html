@@ -1,11 +1,20 @@
 <div class="container">
     <div  class="row">
         <div class="col-md-12 mt-5">
-            <img class="col-md-2 link-logo" src="assets/img/logo_links.svg">
+            <div class="row">
+                <img class="col-md-4" style="width: 200px;" src="assets/img/logo_links.svg">
+                <div class="col-md-2 offset-md-6">
+                    <button class="btn btn-outline-primary mt-4" >LOGOUT </button>
+                </div>
+            </div>
         </div>
-        <button class="col-md-2 offset-md-8 btn btn-primary" >LOGOUT </button>
+        
         <div class="col-md-12">
-            <!-- <img class="mx-auto d-block link-logo" src="assets/img/logo_links.svg"> -->
+           <app-card-user class="col-md-4"></app-card-user>
+           <app-card-create-link class="col-md-8"></app-card-create-link>
+        </div>
+        <div class="col-md-12">
+            <app-card-view-link class="col-md-8"></app-card-view-link>
         </div>
         
         <!-- <form *ngIf="userRegister" [formGroup]="formLogin" (ngSubmit)="loginSubmit(formLogin)" class="col-md-4 offset-md-4 card card-link shadow-lg">

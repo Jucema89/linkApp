@@ -6,6 +6,7 @@ import { User } from '../../models/user.model';
 // CREATE LINKS
 export const SetCrearLink = createAction(
     '[LINK] Set Crear link',
+    props< { url: string, name: string } >()
 );
 
 export const SuccessCrearLink = createAction(
@@ -57,7 +58,7 @@ export const SetUserRegister = createAction(
 
 export const SuccesUserRegister = createAction(
     '[AUTH] Success User Create',
-    props< { user: any, msj: string } >()
+    props< { user: User, msj: string } >()
 );
 
 export const ErrorUserRegister = createAction(

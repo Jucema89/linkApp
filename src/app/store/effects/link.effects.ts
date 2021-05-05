@@ -21,23 +21,24 @@ export class LinksEffects {
         private route: Router,
     ) {}
     
-    // createLink$= createEffect(() => 
-    //     this.actions$.pipe(
-    //     ofType( actions.SetCrearLink ),
-    //        switchMap(({link}) => {
-    //         return this.db.createLink({ ...link})
-    //         .pipe(
-    //             map((resp) => {
-    //                console.log(resp);
-    //                return this.utils.alertSucces('Link creado correctamenet')
-    //             }),
-    //         )
-    //        }),
-    //        catchError( error => {
-    //         of(actions.ErrorCrearLink({ error }));
-    //     })
-    //     )
-    // );
+    createLink$= createEffect(() => 
+        this.actions$.pipe(
+        ofType( actions.SetCrearLink ),
+           switchMap(({url, name}) => {
+            return this.db.createLink(url, name)
+            .pipe(
+                map((resp) => {
+                   console.log(resp);
+                   return this.utils.alertSucces('Link creado correctamenet')
+                }),
+            )
+           }),
+           // @ts-ignore
+           catchError( error => {
+            of(actions.ErrorCrearLink({ error }));
+        })
+        )
+    );
 
     // errorLink$= createEffect(() => 
     //     this.actions$.pipe(
@@ -161,38 +162,42 @@ export class LinksEffects {
            })
         )
     );
+    
+    // USER GET
+    
+    getUser$= createEffect(() => 
+        this.actions$.pipe(
+        ofType(actions.SetUserGet),
+            // @ts-ignore
+            switchMap(({id}) => { 
+            return this.db.getUser(id)
+            .pipe(
+                map((user: any) => {
+                    return actions.SuccesUserGet({user});
+                }),
+                // @ts-ignore
+                catchError( error => {
+                    of(actions.ErrorUserGet({ error }));
+                })
+            )
+           })
+        )
+    );
 
-    // errorLink$= createEffect(() => 
-    //     this.actions$.pipe(
-    //     ofType( actions.ErrorCrearLink ),
-    //        switchMap((error: any) => {
-    //         return this.utils.alertError(error)
-    //        })
-    //     )
-    // );
-
-    // successLink$= createEffect(() => 
-    //     this.actions$.pipe(
-    //     ofType( actions.SuccessCrearLink ),
-    //        exhaustMap(resp => {
-    //         return this.utils.alertSucces(resp)
-    //        })
-    //     )
-    // );
-
-
-
-
-    // cargarUsuarios$ = createEffect(() => 
-    //     this.actions$.pipe(
-    //         ofType( usuariosActions.cargarUsuarios ),
-    //         map( data => console.log('efecto tap: ', data) ),
-    //         exhaustMap(
-    //             () => this.usuarioService.getUsers()
-    //                 .pipe(
-    //                     map( data      => console.log('getUsers effect: ', data) )
-    //                 )
-    //         )
-    //     )
-    // );
+    errorGetUser$= createEffect(() => 
+        this.actions$.pipe(
+        ofType( actions.ErrorUserGet ),
+           // @ts-ignore
+           switchMap((error: any) => {
+            this.utils.alertError(error)
+            .then((resp) => {
+                if(resp.isConfirmed){
+                    this.route
+                    .navigate([""])
+                }
+            })
+           })
+        )
+    );
+    
 }

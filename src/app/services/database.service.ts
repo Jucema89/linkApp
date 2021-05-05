@@ -5,8 +5,6 @@ import { environment } from '../../environments/environment';
 import { tap } from 'rxjs/operators';
 import { Link } from '../models/link.model';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -50,17 +48,17 @@ export class DatabaseService {
   }
 
   getUser(id: string) {
-    return this.http.get(`${environment.url_api}/user/` + id),
-    {
+    return this.http.get(`${environment.url_api}/user/` + id, {
       headers: { 
         'Token': this.tokenService.getToken(),
-        'Content-Type': 'application/json' }
-    }
+        'Content-Type': 'application/json' 
+      }
+    });
   }
 
-  createLink(link: Link){
+  createLink(url, name){
     return this.http.post(`${environment.url_api}/links`, {
-      ... link
+      url, name
     },
     {
       headers: { 

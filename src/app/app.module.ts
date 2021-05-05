@@ -16,6 +16,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { linksReducer } from './store/reducer/links.reducer';
+import { CardUserComponent } from './components/dashboard/card-user/card-user.component';
+import { CardCreateLinkComponent } from './components/dashboard/card-create-link/card-create-link.component';
+import { CardViewLinkComponent } from './components/dashboard/card-view-link/card-view-link.component';
+import { appReducers } from './store/app.reducer';
 
 
 
@@ -23,7 +27,10 @@ import { linksReducer } from './store/reducer/links.reducer';
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    CardUserComponent,
+    CardCreateLinkComponent,
+    CardViewLinkComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +38,7 @@ import { linksReducer } from './store/reducer/links.reducer';
     SweetAlert2Module.forRoot(),
     AppRoutingModule,
     ReactiveFormsModule,
-    StoreModule.forRoot( linksReducer ),
+    StoreModule.forRoot( appReducers ),
     EffectsModule.forRoot([LinksEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
