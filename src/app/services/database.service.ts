@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenService } from './token.service';
 import { environment } from '../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Link } from '../models/link.model';
 
 @Injectable({
@@ -57,14 +57,23 @@ export class DatabaseService {
   }
 
   createLink(url, name){
+    const reqHeader = new HttpHeaders({
+        'Token': this.tokenService.getToken(),
+        'Content-Type': 'application/json' 
+    })
     return this.http.post(`${environment.url_api}/links`, {
       url, name
     },
     {
-      headers: { 
-        'Token': this.tokenService.getToken(),
-        'Content-Type': 'application/json' }
+      headers: reqHeader
     })
+    .pipe(
+      tap(
+        (data) => {
+         console.log('data desde service', data)
+        }
+      )
+    )
   }
 
   getLinks() {

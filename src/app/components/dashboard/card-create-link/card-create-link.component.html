@@ -1,1 +1,13 @@
-<p>card-create-link works!</p>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form)" class="col-md-4 offset-md-4 card card-link shadow-lg">
+        <div class="form-floating">
+        <input formControlName="url" type="text" class="form-control" id="floatingInput" placeholder="www.url.com">
+        <label for="floatingInput">Url To Save</label>
+        </div>
+        <div class="form-floating">
+        <input formControlName="name" type="text" class="form-control" id="floatingPassword" placeholder="Name of Url">
+        <label for="floatingPassword">Name of Url</label>
+        </div>
+        <button [disabled]="form.invalid" class="btn btn-primary">
+            ADD
+        </button>
+    </form>

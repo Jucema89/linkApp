@@ -27,7 +27,7 @@ const _linksReducer = createReducer(
   
   on( actions.SuccessCrearLink, (state, {link}) => ({
     ...state, 
-    link
+    link 
     })
   ),
 

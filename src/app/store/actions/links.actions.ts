@@ -11,7 +11,7 @@ export const SetCrearLink = createAction(
 
 export const SuccessCrearLink = createAction(
     '[LINK] Success Crear link',
-    props< { link: any } >()
+    props< {  link: any } >()
 );
 
 export const ErrorCrearLink = createAction(

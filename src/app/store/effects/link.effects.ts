@@ -1,14 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Actions, ofType, createEffect } from "@ngrx/effects";
 import { Router } from "@angular/router";
-import { catchError, exhaustMap, map, switchMap, tap, take } from "rxjs/operators";
-import { of } from "rxjs";
+import { catchError, exhaustMap, map, switchMap, tap, take, debounceTime } from "rxjs/operators";
+import { of, from } from "rxjs";
 import * as actions from '../actions/links.actions';
-
 import { DatabaseService } from '../../services/database.service';
 import { UtilitiesService } from '../../services/utilities.service';
 import { TokenService } from '../../services/token.service';
-import { SetUserLogin } from '../actions/links.actions';
+import { Link } from '../../models/link.model';
 
 @Injectable()
 export class LinksEffects {
@@ -24,12 +23,15 @@ export class LinksEffects {
     createLink$= createEffect(() => 
         this.actions$.pipe(
         ofType( actions.SetCrearLink ),
-           switchMap(({url, name}) => {
+           exhaustMap(({url, name}) => {
             return this.db.createLink(url, name)
             .pipe(
-                map((resp) => {
-                   console.log(resp);
-                   return this.utils.alertSucces('Link creado correctamenet')
+                map((linkRes) => {
+                   console.log('createLink$ resp of db = ', linkRes);
+                const link = {
+                    url, name
+                }
+                   return actions.SuccessCrearLink({link})
                 }),
             )
            }),
@@ -40,23 +42,30 @@ export class LinksEffects {
         )
     );
 
-    // errorLink$= createEffect(() => 
-    //     this.actions$.pipe(
-    //     ofType( actions.ErrorCrearLink ),
-    //        switchMap((error: any) => {
-    //         return this.utils.alertError(error)
-    //        })
-    //     )
-    // );
+    errorLink$= createEffect(() => 
+        this.actions$.pipe(
+        ofType( actions.ErrorCrearLink ),
+            // @ts-ignore
+           switchMap((error: any) => {
+            this.utils.alertError(error)
+           })
+        )
+    );
 
-    // successLink$ = createEffect(() => 
-    //     this.actions$.pipe(
-    //     ofType( actions.SuccessCrearLink ),
-    //        exhaustMap( resp => {
-    //         return this.utils.alertSucces(resp)
-    //        })
-    //     )
-    // );
+    successLink$ = createEffect(() => 
+        this.actions$.pipe(
+        ofType( actions.SuccessCrearLink ),
+            // @ts-ignore
+           exhaustMap( resp => {
+               if(resp) {
+                this.utils.alertSucces({msj: 'Link creado correctamente'})
+               } else {
+                this.utils.alertError({msj: 'Error creando Link'})
+               }
+               
+           })
+        )
+    );
 
     // USER REGISTER
     createUser$= createEffect(() => 
@@ -68,7 +77,6 @@ export class LinksEffects {
                 map((resp: any) => {
                     this.token.saveIdUser(resp.id);
                     return actions.SuccesUserRegister({user: user, msj: 'Usuario creado correctamenet'});
-                    
                 }),
                 // @ts-ignore
                 catchError( error => {
